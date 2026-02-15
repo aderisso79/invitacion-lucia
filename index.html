@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación 15 Años - Lucía</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --soft-rose: #fbcce1;
+        }
+
+        body {
+            background-color: #fdf2f8;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .invitation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 8px double var(--gold);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .cursive-name {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #d4af37, #f9d976, #b38728);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+
+        .btn-main {
+            background: var(--gold);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            margin-top: 20px;
+        }
+
+        .btn-main:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Modal Styles */
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .location-box {
+            background: #fff0f3;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px dashed #ffb3c1;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 15px auto 0;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="invitation-card">
+        <p class="text-[10px] uppercase tracking-[0.3em] text-gray-400">Mis 15 Años</p>
+        <h1 class="cursive-name">Lucía</h1>
+        <div class="my-6 space-y-1">
+            <p class="font-semibold text-gray-800">18 DE ABRIL</p>
+	    <p class="font-semibold text-gray-800">de 13:30 HS a 17:00 HS</p>
+            <!-- <p class="text-sm text-gray-600">Club La Segunda</p> -->
+        </div>
+
+        <div class="location-box">
+            <p class="text-xs uppercase font-bold text-pink-500 mb-1">Ubicación</p>
+            <p class="font-semibold text-gray-800">Acevedo 602</p>
+            <p class="text-sm text-gray-600">(Acevedo y Juan José Paso)</p>
+            <p class="text-sm font-bold text-gray-700">Club La Segunda</p>
+                
+            <a href="https://www.google.com/maps/search/?api=1&query=Acevedo+602+Club+La+Segunda" target="_blank" class="text-pink-500 text-xs font-bold mt-2 inline-block underline">
+                VER EN GOOGLE MAPS
+            </a>
+        </div>
+
+        <button class="btn-main" onclick="toggleModal(true)">CONFIRMAR ASISTENCIA</button>
+    </div>
+
+    <!-- Modal Formulario -->
+    <div id="modal-overlay">
+        <div class="modal-box">
+            <h2 class="text-xl font-bold text-gray-800 text-center">Confirmar Asistencia</h2>
+            <p class="text-sm text-gray-500 text-center mb-4">Completa tus datos para la lista</p>
+            
+            <div id="form-container">
+                <input type="text" id="input-nombre" placeholder="Nombre y Apellido">
+                <input type="text" id="input-dni" placeholder="Número de DNI">
+                
+                <p id="error-text" class="text-red-500 text-xs mt-3 hidden text-center">⚠️ Por favor completa ambos campos</p>
+                
+                <div id="loading-spinner" class="loader"></div>
+                
+                <button id="btn-confirmar" class="btn-main" onclick="validarYEnviar()">ACEPTAR</button>
+                <button class="w-full mt-3 text-gray-400 text-xs font-medium" onclick="toggleModal(false)">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // REEMPLAZA ESTA URL con la que te dio Google Apps Script después de autorizar
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz7lmKLyOqx8QKXHzIhbBfx0k3dZwVjvKqPrmLWKZjX2y9rrVgrmsdjUH-PHCa-p3pK/exec";
+
+        function toggleModal(show) {
+            document.getElementById('modal-overlay').style.display = show ? 'flex' : 'none';
+            if (!show) {
+                document.getElementById('input-nombre').value = '';
+                document.getElementById('input-dni').value = '';
+                document.getElementById('error-text').classList.add('hidden');
+            }
+        }
+
+        async function validarYEnviar() {
+            const nombre = document.getElementById('input-nombre').value.trim();
+            const dni = document.getElementById('input-dni').value.trim();
+            const errorText = document.getElementById('error-text');
+            const spinner = document.getElementById('loading-spinner');
+            const btn = document.getElementById('btn-confirmar');
+
+            // 1. Validar campos
+            if (nombre === "" || dni === "") {
+                errorText.classList.remove('hidden');
+                return;
+            }
+
+            // 2. Preparar UI para envío
+            errorText.classList.add('hidden');
+            spinner.style.display = 'block';
+            btn.disabled = true;
+            btn.innerText = "PROCESANDO...";
+
+            // 3. Crear datos para enviar
+            const formData = new URLSearchParams();
+            formData.append('Nombre', nombre);
+            formData.append('Dni', dni);
+            formData.append('Estado', 'Confirmado');
+
+            try {
+                // Si aún no pegaste la URL, mostramos un aviso
+                if (GOOGLE_SCRIPT_URL === "ESCRIBE_AQUI_TU_URL") {
+                    setTimeout(() => {
+                        alert("¡Campos validados correctamente!\nPara guardar en el Excel, pega la URL del script en el código.");
+                        spinner.style.display = 'none';
+                        btn.disabled = false;
+                        btn.innerText = "ACEPTAR";
+                    }, 1000);
+                    return;
+                }
+
+                // Envío real a Google Sheets
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Importante para evitar problemas de CORS con Google Scripts
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                // Éxito
+                alert("¡Gracias " + nombre + "! Tu asistencia ha sido registrada.");
+                toggleModal(false);
+                const mainBtn = document.querySelector('.btn-main');
+                mainBtn.innerText = "✓ ASISTENCIA ENVIADA";
+                mainBtn.disabled = true;
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Ocurrió un error al conectar con la planilla. Verifica la conexión.");
+                spinner.style.display = 'none';
+                btn.disabled = false;
+                btn.innerText = "ACEPTAR";
+            }
+        }
+    </script>
+</body>
+</html>
